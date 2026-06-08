@@ -1,0 +1,12 @@
+# Fichiers générés par le compilateur
+target/
+*.class
+
+# Fichiers de configuration de l'IDE (IntelliJ)
+.idea/
+*.iml
+*.iws
+
+# Fichiers système
+.DS_Store
+Thumbs.db
