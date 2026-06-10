@@ -1,34 +1,26 @@
 package sn.epf.pointage;
 
-import org.hibernate.Session;
-import sn.epf.pointage.config.HibernateUtil;
+import sn.epf.pointage.dao.UtilisateurDAO;
+import sn.epf.pointage.model.Utilisateur;
+import sn.epf.pointage.model.enums.RoleUtilisateur;
 
 public class TestConnexion {
     public static void main(String[] args) {
         System.out.println("=================================================");
-        System.out.println("🔄 TENTATIVE DE CONNEXION À MYSQL VIA HIBERNATE...");
+        System.out.println("🔄 TEST D'INSERTION D'UN UTILISATEUR...");
         System.out.println("=================================================");
 
-        try {
-            // Tente d'ouvrir une session avec la base de données
-            Session session = HibernateUtil.getSessionFactory().openSession();
+        // 1. Création d'un utilisateur de test
+        Utilisateur user = new Utilisateur();
+        user.setNom("Testeur");
+        user.setEmail("test@epf.sn");
+        user.setMotDePasse("1234");
+        user.setRole(RoleUtilisateur.ADMIN); // Assure-toi que cet Enum existe
 
-            if (session != null && session.isOpen()) {
-                System.out.println("\n✅ [SUCCÈS] Connexion établie avec brio !");
-                System.out.println("La base 'gestion_pointage_db' est accessible et Hibernate est fonctionnel.\n");
-                session.close();
-            }
+        // 2. Utilisation du DAO pour sauvegarder
+        UtilisateurDAO dao = new UtilisateurDAO();
+        dao.save(user);
 
-            // Fermeture propre du service
-            HibernateUtil.shutdown();
-            System.out.println("=================================================");
-
-        } catch (Exception e) {
-            System.err.println("\n❌ [ERREUR] La connexion a échoué !");
-            System.err.println("Vérifie que WampServer est bien vert et actif.");
-            System.err.println("Détails de l'erreur :");
-            e.printStackTrace();
-            System.err.println("=================================================");
-        }
+        System.out.println("✅ [SUCCÈS] Utilisateur ajouté en base de données !");
     }
 }
